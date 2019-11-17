@@ -1,8 +1,8 @@
 # ISREncoder
 
-This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer".
+This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", accepted for presentation at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).
 
-The code will be 
+The full implementation will be released alongside the poster presentation at AAAI-20 in early Februrary.
 
 
 
@@ -15,4 +15,13 @@ As numerous modern NLP models demonstrate high-performance in various tasks when
 <img src="https://github.com/ChannyHong/ISREncoder/blob/master/imgs/training_flow.png" width="1000px"/>
 
 ## Main Results
+
+Model Type | en | es | de | zh | ar
+---------- | :------: | :------: | :------: | :------: | :------:
+BSE (Baseline) | 63.8 | 57.1 | 51.9 | 53.4 | 50.2
+ISR (λisr = 0) | 65.2 | 57.9 | 55.0 | 55.8 | 50.4
+ISR (λD,Gcls = 0) | 60.1 | 56.1 | 52.6 | 51.2 | 50.0
+ISR (λrec = 0) | 37.6 | 36.3 | 36.0 | 38.0 | 37.4
+**ISR** | **65.4** | **60.4** | **58.8** | **58.4** | **55.4**
+   
 
