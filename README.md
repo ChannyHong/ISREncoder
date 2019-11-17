@@ -16,7 +16,7 @@ As numerous modern NLP models demonstrate high-performance in various tasks when
 
 ## Model
 
-<img src="https://github.com/ChannyHong/ISREncoder/blob/master/imgs/training_flow.png" width="1000px"/>
+<img src="https://github.com/ChannyHong/ISREncoder/blob/master/imgs/training_flow.png" width="800px"/>
 
 ## Main Results
 
