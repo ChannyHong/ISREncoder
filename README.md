@@ -19,9 +19,9 @@ As numerous modern NLP models demonstrate high-performance in various tasks when
 Model Type | en | es | de | zh | ar
 ---------- | :------: | :------: | :------: | :------: | :------:
 BSE (Baseline) | 63.8 | 57.1 | 51.9 | 53.4 | 50.2
-ISR (λisr = 0) | 65.2 | 57.9 | 55.0 | 55.8 | 50.4
-ISR (λD,Gcls = 0) | 60.1 | 56.1 | 52.6 | 51.2 | 50.0
-ISR (λrec = 0) | 37.6 | 36.3 | 36.0 | 38.0 | 37.4
+ISR ($\lambda_{isr} = 0$) | 65.2 | 57.9 | 55.0 | 55.8 | 50.4
+ISR ($\lambda_{D,G_{cls}} = 0$) | 60.1 | 56.1 | 52.6 | 51.2 | 50.0
+ISR ($\lambda_{rec} = 0$) | 37.6 | 36.3 | 36.0 | 38.0 | 37.4
 **ISR** | **65.4** | **60.4** | **58.8** | **58.4** | **55.4**
    
 
