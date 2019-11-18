@@ -4,8 +4,6 @@
 
 This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", accepted for presentation at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).
 
-ArXiv: [insert link here]
-
 The full implementation will be released alongside the poster presentation at AAAI-20 in early Februrary.
 
 
