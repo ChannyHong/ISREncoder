@@ -2,24 +2,24 @@
 
 # ISREncoder
 
-This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", accepted for presentation at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).
+This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", accepted for presentation at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).\
 
-Copyright 2020 Superb AI, Inc.
-The code, cache files, and the models are all released under the Apache 2.0 license.
-Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
+Copyright 2020 Superb AI, Inc.\
+The code, cache files, and the models are all released under the Apache 2.0 license.\
+Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.\
 
-Paper: (AAAI-20 & arXiv links coming soon!)
-Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)
+Paper: (AAAI-20 & arXiv links coming soon!)\
+Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)\
 
 ## ISR Encoder Training
 
-Code for training the ISR Encoder. Requires monolingual corpora (such as that from [Wikipedia dumps](https://dumps.wikimedia.org/)) for training.
+Code for training the ISR Encoder. Requires monolingual corpora cache files (refer to the Parsing and Caching Scripts section below) for training.\
 
-Prerequisites:
+Prerequisites:\
 
-The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):
-- monolingual corpora sentences cache files, as mc_##.npy (i.e. mc_de.npy).
-- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.
+The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):\
+- monolingual corpora sentences cache files, as mc_##.npy (i.e. mc_de.npy).\
+- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.\
 ```
 python train_isr.py \
   --data_dir=data \
@@ -48,13 +48,13 @@ python train_isr.py \
 
 ## Classifier Training
 
-Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language i.e. English) for training.
+Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language i.e. English) for training.\
 
-Prerequisites:
+Prerequisites:\
 
-The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):
-- NLI training examples cache file(s), as bse_##.npy (i.e. bse_en.npy).
-- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.
+The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):\
+- NLI training examples cache file(s), as bse_##.npy (i.e. bse_en.npy).\
+- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.\
 
 ```
 python train_classifier.py \
@@ -80,25 +80,35 @@ python train_classifier.py \
 
 ## Parsing and Caching Scripts
 
-[Wikipedia dumps](https://dumps.wikimedia.org/)
+Monolingual corpora cache files\
 
-Wikipedia dump
-Parsing XML
+1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest.\
 
-[mc_en.txt](___)
-[mc_es.txt](___)
-[mc_de.txt](___)
-[mc_zh.txt](___)
-[mc_ar.txt](___)
+2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to produce an XML file.\
 
-[DEV.npy](___)
-[TEST.npy](___)
-[bse_en.npy](___)
-[mc_en.npy](___)
-[mc_es.npy](___)
-[mc_de.npy](___)
-[mc_zh.npy](___)
-[mc_ar.npy](___)
+2. Run FILENAME.py to perform cleanup and extract a .txt file.\
+
+[mc_en.txt](___)\
+[mc_es.txt](___)\
+[mc_de.txt](___)\
+[mc_zh.txt](___)\
+[mc_ar.txt](___)\
+
+3. Run FILENAME.py (caching script) to produce cache files.\
+
+[mc_en.npy](___)\
+[mc_es.npy](___)\
+[mc_de.npy](___)\
+[mc_zh.npy](___)\
+[mc_ar.npy](___)\
+
+NLI examples cache files\
+
+1. \
+
+[bse_en.npy](___)\
+[DEV.npy](___)\
+[TEST.npy](___)\
 
 
 ## Paper Abstract
