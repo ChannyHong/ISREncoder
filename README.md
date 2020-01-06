@@ -80,7 +80,7 @@ python train_classifier.py \
 
 ## Parsing and Caching Scripts
 
-Monolingual corpora cache files\
+Producing monolingual corpora cache files\
 
 1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest.\
 
@@ -102,7 +102,7 @@ Monolingual corpora cache files\
 [mc_zh.npy](___)\
 [mc_ar.npy](___)\
 
-NLI examples cache files\
+Producing NLI examples cache files\
 
 1. \
 
