@@ -87,9 +87,9 @@ python train_classifier.py \
 
 ## Parsing and Caching Scripts
 
-Producing a monolingual corpora cache file from a Wikipedia dump\
+Producing a monolingual corpora cache file from a Wikipedia dump
 
-1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).\
+1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).
 
 2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple):
 
@@ -102,7 +102,7 @@ python WikiExtractor.py \
 en_dump.xml
 ```
 
-3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.\
+3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.
 
 Prerequisites:\
 - The once-extracted dump file (e.g. wiki_00) in the 'source_file_path' directory (the trailing source file name is not part of the directory).
@@ -122,7 +122,7 @@ The monolingual corpora .txt files used in our study can be downloaded here:
 [mc_es.txt](___)\
 [mc_de.txt](___)\
 [mc_zh.txt](___)\
-[mc_ar.txt](___)\
+[mc_ar.txt](___)
 
 3. Run FILENAME.py (caching script) to produce cache files.\
 
@@ -131,18 +131,18 @@ The monolingual corpora cache files used in our study can be downloaded here:
 [mc_es.npy](___)\
 [mc_de.npy](___)\
 [mc_zh.npy](___)\
-[mc_ar.npy](___)\
+[mc_ar.npy](___)
 
-Producing a NLI examples cache file\
+Producing a NLI examples cache file
 
-1. Download the XNLI \
+1. Download the XNLI 
 
 
 
-The NLI examples cache files used in our study can be downloaded here:
+The NLI examples cache files used in our study can be downloaded here:\
 [bse_en.npy](___)\
 [DEV.npy](___)\
-[TEST.npy](___)\
+[TEST.npy](___)
 
 
 ## Paper Abstract
