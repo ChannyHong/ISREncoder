@@ -2,28 +2,31 @@
 
 # ISREncoder
 
-This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", accepted for presentation at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).\
+This is the project page for the Tensorflow implementation of the paper, "Unsupervised Interlingual Semantic Representations from Sentence Embeddings for Zero-Shot Cross-Lingual Transfer", to be presented at the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI-20).
 
 Copyright 2020 Superb AI, Inc.\
 The code, cache files, and the models are all released under the Apache 2.0 license.\
-Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.\
+Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
 
 Paper: (AAAI-20 & arXiv links coming soon!)\
-Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)\
+Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)
 
 ## ISR Encoder Training
 
-Code for training the ISR Encoder. Requires monolingual corpora cache files (refer to the Parsing and Caching Scripts section below) for training.\
+Script for training the ISR Encoder. Requires monolingual corpora cache files for training.
 
-Prerequisites:\
+Prerequisites:
 
-The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):\
-- monolingual corpora sentences cache files, as mc_##.npy (i.e. mc_de.npy).\
-- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.\
+The following cache files saved in the 'data_dir' directory:\
+- Monolingual corpora sentences cache files, as mc_##.npy (e.g. mc_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.\
+- (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](___); refer to Parsing and Caching Scripts section below.
+
+(If do_mid_train_eval,) The following model files in the 'mid_train_eval_nli_model_path' directory (the trailing 'nli_solver' is model name and not part of the directory):\
+-  English NLI solver model files, as [nli_solver.meta](___), [nli_solver.index](___), and [nli_solver.data-00000-of-00001](___) (note that 'mid_train_eval_nli_target_language' should be fixed as English when using this NLI solver).
 ```
 python train_isr.py \
   --data_dir=data \
-  --output_dir=outputs/model_isrFull_trXNLIEnEsDeZhAr93 \
+  --output_dir=outputs/isr_training_model \
   --train_languages=English,Spanish,German,Chinese,Arabic \
   --embedding_size=768 \
   --train_batch_size=32 \
@@ -43,24 +46,28 @@ python train_isr.py \
   --do_mid_train_eval=True \
   --run_mid_train_eval_steps=5000 \
   --mid_train_eval_nli_target_language=English \
-  --mid_train_eval_nli_model_path=nli_solver/model-50-12271 \
+  --mid_train_eval_nli_model_path=nli_solver_path/nli_solver \
 ```
 
 ## Classifier Training
 
-Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language i.e. English) for training.\
+Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language, i.e. English) for training.
 
-Prerequisites:\
+Prerequisites:
 
-The following cache files saved in the 'data_dir' directory (## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)):\
-- NLI training examples cache file(s), as bse_##.npy (i.e. bse_en.npy).\
-- (if do_mid_train_eval) XNLI dev examples cache file, as DEV.npy.\
+The following cache files saved in the 'data_dir' directory:\
+- NLI training examples cache file(s), as bse_##.npy (e.g. bse_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).\
+- (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](___).
+
+The following files in the 'isr_encoder_dir' directory:\
+- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](___), [isr_encoder.index](___), and [isr_encoder.data-00000-of-00001](___).\
+- The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](___)
 
 ```
 python train_classifier.py \
   --data_dir=data \
-  --isr_encoder_path=isr_models/94 \
-  --isr_encoder_name=model-142-30000 \
+  --isr_encoder_dir=isr_encoder_dir \
+  --isr_encoder_name=isr_encoder \
   --output_dir=outputs/model_isrFixed_trISRfromXNLIEn42 \
   --xnli_train_languages=English \
   --embedding_size=768 \
@@ -80,14 +87,37 @@ python train_classifier.py \
 
 ## Parsing and Caching Scripts
 
-Producing monolingual corpora cache files\
+Producing a monolingual corpora cache file from a Wikipedia dump\
 
-1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest.\
+1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).\
 
-2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to produce an XML file.\
+2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple):
 
-2. Run FILENAME.py to perform cleanup and extract a .txt file.\
+Prerequisites:\
+- The downloaded dump file (e.g. en_dump.xml) in the current directory.
+```
+python WikiExtractor.py \
+ --output=en_extracted \
+ --bytes=100G \
+en_dump.xml
+```
 
+3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.\
+
+Prerequisites:\
+- The once-extracted dump file (e.g. wiki_00) in the 'source_file_path' directory (the trailing source file name is not part of the directory).
+
+```
+python mc_custom_extraction.py \
+  --source_file_path=once_extracted/wiki_00 \
+  --output_dir=custom_extracted \
+  --language=en \
+  --char_count_lower_bound=4 \
+  --char_count_upper_bound=385 \
+  --output_num_examples=392702
+```
+
+The monolingual corpora .txt files used in our study can be downloaded here:
 [mc_en.txt](___)\
 [mc_es.txt](___)\
 [mc_de.txt](___)\
@@ -96,16 +126,20 @@ Producing monolingual corpora cache files\
 
 3. Run FILENAME.py (caching script) to produce cache files.\
 
+The monolingual corpora cache files used in our study can be downloaded here:
 [mc_en.npy](___)\
 [mc_es.npy](___)\
 [mc_de.npy](___)\
 [mc_zh.npy](___)\
 [mc_ar.npy](___)\
 
-Producing NLI examples cache files\
+Producing a NLI examples cache file\
 
-1. \
+1. Download the XNLI \
 
+
+
+The NLI examples cache files used in our study can be downloaded here:
 [bse_en.npy](___)\
 [DEV.npy](___)\
 [TEST.npy](___)\

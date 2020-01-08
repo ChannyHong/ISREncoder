@@ -30,7 +30,7 @@ FLAGS = flags.FLAGS
 
 # Input parameters
 flags.DEFINE_string("data_dir", None, "The directory to the XNLI datasets and cache files. Should contain the .tsv files for both training and evaluation examples (and also the BSE cache files, if applicable).")
-flags.DEFINE_string("isr_encoder_path", None, "The pathway to folder containing ISR models.")
+flags.DEFINE_string("isr_encoder_dir", None, "The pathway to folder containing ISR models.")
 flags.DEFINE_string("isr_encoder_name", None, "The name of exact model to run classifier training with.")
 flags.DEFINE_string("output_dir", None, "The output directory where the classifier models' checkpoints will be written.")
 
@@ -125,7 +125,7 @@ def main():
   ##############################################################
 
   # Get language_reference; the languages used in training ISR, which decides the original_label_onehots_tensor shape that Encoder will expect
-  language_reference_file = open(os.path.join(FLAGS.isr_models_path, "language_reference.json"), 'r')
+  language_reference_file = open(os.path.join(FLAGS.isr_encoder_dir, "language_reference.json"), 'r')
   language_reference = json.load(language_reference_file)
 
   # Get train examples; either from raw_dataset or from bse_caches
@@ -153,7 +153,7 @@ def main():
 
   with isr_sess.as_default():
     with isr_encoder_graph.as_default(): 
-      isr_model = "{}/{}".format(FLAGS.isr_models_path, FLAGS.isr_model_name)
+      isr_model = "{}/{}".format(FLAGS.isr_encoder_dir, FLAGS.isr_encoder_name)
       imported_graph = tf.train.import_meta_graph("{}.meta".format(isr_model))
       imported_graph.restore(isr_sess, isr_model)
 
