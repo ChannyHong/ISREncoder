@@ -87,7 +87,7 @@ python train_classifier.py \
 
 ## Parsing and Caching Scripts
 
-### Producing a monolingual corpora cache file from a Wikipedia dump
+### Producing a monolingual corpora cache file from Wikipedia dump
 
 1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).
 
@@ -124,7 +124,21 @@ The monolingual corpora .txt files used in our study can be downloaded here:\
 [mc_zh.txt](___)\
 [mc_ar.txt](___)
 
-3. Run FILENAME.py (caching script) to produce cache files.
+3. Run bse_cache.py to produce cache files.
+
+Prerequisites:
+- [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
+- [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
+- The custom extracted .txt file (e.g. mc_en.txt) in 'data_dir' directory.
+
+```
+python bse_cache.py \
+  --data_dir=custom_extracted \
+  --language=English \
+  --data_type=mc \
+  --output_dir=bse_cache_files \
+  --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
+```
 
 The monolingual corpora cache files used in our study can be downloaded here:\
 [mc_en.npy](___)\
@@ -133,17 +147,51 @@ The monolingual corpora cache files used in our study can be downloaded here:\
 [mc_zh.npy](___)\
 [mc_ar.npy](___)
 
-### Producing a NLI examples cache file
+### Producing a NLI examples cache file from XNLI dataset
 
-1. Download the XNLI 
+1. Download the [XNLI dev and test examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-1.0.zip) (xnli.dev.tsv and xnli.test.tsv) from the [XNLI project page](https://www.nyu.edu/projects/bowman/xnli/). Also download the [XNLI machine translated training examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-MT-1.0.zip), which includes the original English MNLI training examples (as multinli.train.en.tsv).
 
+2. Run bse_cache.py to produce cache files.
 
+#### English MNLI training examples
+
+Prerequisites:
+- ____
+```
+python bse_cache.py \
+  --data_dir=xnli_data \
+  --language=English \
+  --data_type=mnli \
+  --output_dir=bse_cache_files \
+  --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
+```
+
+#### XNLI dev examples
+Prerequisites:
+- ____
+```
+python bse_cache.py \
+  --data_dir=xnli_data \
+  --data_type=dev \
+  --output_dir=bse_cache_files \
+  --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
+```
+
+#### XNLI test examples
+Prerequisites:
+- ____
+```
+python bse_cache.py \
+  --data_dir=xnli_data \
+  --data_type=test \
+  --output_dir=bse_cache_files \
+  --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
+```
 
 The NLI examples cache files used in our study can be downloaded here:\
 [bse_en.npy](___)\
 [DEV.npy](___)\
 [TEST.npy](___)
-
 
 ## Paper Abstract
 
