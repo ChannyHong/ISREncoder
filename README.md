@@ -58,7 +58,7 @@ The following cache files saved in the 'data_dir' directory:
 - (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/open?id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L).
 
 The following files in the 'isr_encoder_dir' directory:
-- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](https://drive.google.com/open?id=1LJ9l-r2OoBPAt-7kNTWr34W7Et-gzhFN), [isr_encoder.index](https://drive.google.com/open?id=1PIOseaAo37SeKe7_lbSGqQdFI-4h0ywH), and [isr_encoder.data-00000-of-00001](https://drive.google.com/open?id=1Y0IyQOKZsknMEhQTzdGFyj9zFDtRi2PW).
+- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](https://drive.google.com/uc?export=download&id=1LJ9l-r2OoBPAt-7kNTWr34W7Et-gzhFN), [isr_encoder.index](https://drive.google.com/open?id=1PIOseaAo37SeKe7_lbSGqQdFI-4h0ywH), and [isr_encoder.data-00000-of-00001](https://drive.google.com/open?id=1Y0IyQOKZsknMEhQTzdGFyj9zFDtRi2PW).
 - The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](https://drive.google.com/open?id=1Owm6Hv6KKE1NLGhTtgAGINfZc94LHYA_)
 
 ```
