@@ -17,10 +17,10 @@ Prerequisites:
 
 The following cache files saved in the 'data_dir' directory:
 - Monolingual corpora sentences cache files, as mc_##.npy (e.g. mc_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.
-- (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](____); refer to Parsing and Caching Scripts section below.
+- (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L); refer to Parsing and Caching Scripts section below.
 
 (If do_mid_train_eval,) The following model files in the 'mid_train_eval_nli_model_path' directory (the trailing 'nli_solver' is model name and not part of the directory):
--  English NLI solver model files, as [nli_solver.meta](____), [nli_solver.index](____), and [nli_solver.data-00000-of-00001](____) (note that 'mid_train_eval_nli_target_language' should be fixed as English when using this NLI solver).
+-  English NLI solver model files, as [nli_solver.meta](https://drive.google.com/uc?export=download&id=1RroiNFZVxap9FPCwSkS78CiXfoxHkgzw), [nli_solver.index](https://drive.google.com/uc?export=download&id=1sptgnDG8lhj415OVnjHt25peORMy8a8E), and [nli_solver.data-00000-of-00001](https://drive.google.com/uc?export=download&id=1nDtQFFOM7EnA8sX5viyXcrwkWoGsw1JE) (note that 'mid_train_eval_nli_target_language' should be fixed as English when using this NLI solver).
 ```
 python train_isr.py \
   --data_dir=data \
@@ -55,11 +55,11 @@ Prerequisites:
 
 The following cache files saved in the 'data_dir' directory:
 - NLI training examples cache file(s), as bse_##.npy (e.g. bse_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).
-- (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](____).
+- (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L).
 
 The following files in the 'isr_encoder_dir' directory:
-- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](____), [isr_encoder.index](____), and [isr_encoder.data-00000-of-00001](_____).
-- The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](____)
+- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](https://drive.google.com/uc?export=download&id=1LJ9l-r2OoBPAt-7kNTWr34W7Et-gzhFN), [isr_encoder.index](https://drive.google.com/uc?export=download&id=1PIOseaAo37SeKe7_lbSGqQdFI-4h0ywH), and [isr_encoder.data-00000-of-00001](https://drive.google.com/uc?export=download&id=1Y0IyQOKZsknMEhQTzdGFyj9zFDtRi2PW).
+- The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](https://drive.google.com/uc?export=download&id=1Owm6Hv6KKE1NLGhTtgAGINfZc94LHYA_)
 
 ```
 python train_classifier.py \
@@ -116,11 +116,11 @@ python mc_custom_extraction.py \
 ```
 
 The monolingual corpora .txt files used in our study can be downloaded here:\
-[mc_en.txt](___)\
-[mc_es.txt](___)\
-[mc_de.txt](___)\
-[mc_zh.txt](___)\
-[mc_ar.txt](___)
+[mc_en.txt](https://drive.google.com/uc?export=download&id=1SkZKzfMY2X5_1XNOvfIE5RSjiA34ec6z)\
+[mc_es.txt](https://drive.google.com/uc?export=download&id=1LsoXQgGGp5n_Ks1sFO4AHTe9UH6QUYA7)\
+[mc_de.txt](https://drive.google.com/uc?export=download&id=1Mz-wxBcgkMKruep59LB3RgWXnYs15h3_)\
+[mc_zh.txt](https://drive.google.com/uc?export=download&id=1jXYRLgox3R_K46uDhOlhzUEY0gYax1pR)\
+[mc_ar.txt](https://drive.google.com/uc?export=download&id=1NsRpJvjcjhx4lYc6Of4JfsXVPZi92LW2)
 
 4. Run bse_cache.py to produce cache files.
 
@@ -139,11 +139,11 @@ python bse_cache.py \
 ```
 
 The monolingual corpora cache files used in our study can be downloaded here:\
-[mc_en.npy](___)\
-[mc_es.npy](___)\
-[mc_de.npy](___)\
-[mc_zh.npy](___)\
-[mc_ar.npy](___)
+[mc_en.npy](https://drive.google.com/uc?export=download&id=1LArWH8bU2sL0o-Ih2y2re2osxRGnv8bJ)\
+[mc_es.npy](https://drive.google.com/uc?export=download&id=1_PEgGCv7e4YJKWhDBhKseHc9GyYpF2Cj)\
+[mc_de.npy](https://drive.google.com/uc?export=download&id=1lcUBEKOry8JscOsM4P3NKeWI0ZZfj8i4)\
+[mc_zh.npy](https://drive.google.com/uc?export=download&id=1JZSHRXR_JAelUspEgl2OAS4irIuhdGC2)\
+[mc_ar.npy](https://drive.google.com/uc?export=download&id=1VfUl8B0c0o1KqtxHHLXNlGELw9djOuhX)
 
 ### Producing a NLI examples cache file from XNLI dataset
 
@@ -175,7 +175,7 @@ python bse_cache.py \
   --output_dir=bse_cache_files \
   --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
 ```
-The XNLI dev examples cache file used in our study can be downloaded here: [DEV.npy](___)
+The XNLI dev examples cache file used in our study can be downloaded here: [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L)
 
 #### XNLI test examples
 Prerequisites:
@@ -187,4 +187,4 @@ python bse_cache.py \
   --output_dir=bse_cache_files \
   --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
 ```
-The XNLI test examples cache file used in our study can be downloaded here: [TEST.npy](___)
+The XNLI test examples cache file used in our study can be downloaded here: [TEST.npy](https://drive.google.com/uc?export=download&id=12u5oTmpGZ0hpZTNyY_ABSQRTvU6U--rm)
