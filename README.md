@@ -17,10 +17,10 @@ Prerequisites:
 
 The following cache files saved in the 'data_dir' directory:
 - Monolingual corpora sentences cache files, as mc_##.npy (e.g. mc_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.
-- (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/open?id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L); refer to Parsing and Caching Scripts section below.
+- (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](____); refer to Parsing and Caching Scripts section below.
 
 (If do_mid_train_eval,) The following model files in the 'mid_train_eval_nli_model_path' directory (the trailing 'nli_solver' is model name and not part of the directory):
--  English NLI solver model files, as [nli_solver.meta](https://drive.google.com/open?id=1RroiNFZVxap9FPCwSkS78CiXfoxHkgzw), [nli_solver.index](https://drive.google.com/open?id=1sptgnDG8lhj415OVnjHt25peORMy8a8E), and [nli_solver.data-00000-of-00001](https://drive.google.com/open?id=1nDtQFFOM7EnA8sX5viyXcrwkWoGsw1JE) (note that 'mid_train_eval_nli_target_language' should be fixed as English when using this NLI solver).
+-  English NLI solver model files, as [nli_solver.meta](____), [nli_solver.index](____), and [nli_solver.data-00000-of-00001](____) (note that 'mid_train_eval_nli_target_language' should be fixed as English when using this NLI solver).
 ```
 python train_isr.py \
   --data_dir=data \
@@ -55,11 +55,11 @@ Prerequisites:
 
 The following cache files saved in the 'data_dir' directory:
 - NLI training examples cache file(s), as bse_##.npy (e.g. bse_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).
-- (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/open?id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L).
+- (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](____).
 
 The following files in the 'isr_encoder_dir' directory:
-- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](https://drive.google.com/uc?export=download&id=1LJ9l-r2OoBPAt-7kNTWr34W7Et-gzhFN), [isr_encoder.index](https://drive.google.com/open?id=1PIOseaAo37SeKe7_lbSGqQdFI-4h0ywH), and [isr_encoder.data-00000-of-00001](https://drive.google.com/open?id=1Y0IyQOKZsknMEhQTzdGFyj9zFDtRi2PW).
-- The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](https://drive.google.com/open?id=1Owm6Hv6KKE1NLGhTtgAGINfZc94LHYA_)
+- The ISR Encoder model files outputted from the ISR Encoder Training section above, as isr_encoder.meta, isr_encoder.index, isr_encoder.data-00000-of-00001. Alternatively, the ISR Encoder trained during our study can downloaded here: [isr_encoder.meta](____), [isr_encoder.index](____), and [isr_encoder.data-00000-of-00001](_____).
+- The language reference file, as language_reference.json. The language reference file corresponding to our study's ISR Encoder can be downloaded here: [language_refernce.json](____)
 
 ```
 python train_classifier.py \
@@ -163,7 +163,7 @@ python bse_cache.py \
   --output_dir=bse_cache_files \
   --bert_dir=../pretrained_models/multi_cased_L-12_H-768_A-12 \
 ```
-The English MNLI training examples cache file used in our study can be downloaded here: [bse_en.npy](___)
+The English MNLI training examples cache file used in our study can be downloaded here: [bse_en.npy](https://drive.google.com/uc?export=download&id=1dzOhSUraOtwhSjReoQhISsMeAnqpXhS5)
 
 #### XNLI dev examples
 Prerequisites:
