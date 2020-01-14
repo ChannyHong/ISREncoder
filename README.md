@@ -87,9 +87,9 @@ python train_classifier.py \
 
 ### Producing a monolingual corpora cache file from Wikipedia dump
 
-*1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).*
+**1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).**
 
-*2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)*:
+**2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)**:
 
 Prerequisites:
 - The downloaded dump file (e.g. en_dump.xml) in the current directory.
@@ -100,7 +100,7 @@ python WikiExtractor.py \
 en_dump.xml
 ```
 
-3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.
+**3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.**
 
 Prerequisites:
 - The once-extracted dump file (e.g. wiki_00) in the 'source_file_path' directory (the trailing source file name is not part of the directory and must match the dump file name).
@@ -122,7 +122,7 @@ The monolingual corpora .txt files used in our study can be downloaded here:\
 [mc_zh.txt](https://drive.google.com/uc?export=download&id=1jXYRLgox3R_K46uDhOlhzUEY0gYax1pR)\
 [mc_ar.txt](https://drive.google.com/uc?export=download&id=1NsRpJvjcjhx4lYc6Of4JfsXVPZi92LW2)
 
-4. Run bse_cache.py to produce cache files.
+**4. Run bse_cache.py to produce cache files.**
 
 Prerequisites:
 - [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
@@ -147,9 +147,9 @@ The monolingual corpora cache files used in our study can be downloaded here:\
 
 ### Producing a NLI examples cache file from XNLI dataset
 
-1. Download the [XNLI dev and test examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-1.0.zip) (xnli.dev.tsv and xnli.test.tsv) from the [XNLI project page](https://www.nyu.edu/projects/bowman/xnli/). Also download the [XNLI machine translated training examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-MT-1.0.zip), which includes the original English MNLI training examples (as multinli.train.en.tsv).
+**1. Download the [XNLI dev and test examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-1.0.zip) (xnli.dev.tsv and xnli.test.tsv) from the [XNLI project page](https://www.nyu.edu/projects/bowman/xnli/). Also download the [XNLI machine translated training examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-MT-1.0.zip), which includes the original English MNLI training examples (as multinli.train.en.tsv).**
 
-2. Run bse_cache.py to produce cache files.
+**2. Run bse_cache.py to produce cache files.**
 
 #### English MNLI training examples
 
