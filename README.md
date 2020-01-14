@@ -66,7 +66,7 @@ python train_classifier.py \
   --data_dir=data \
   --isr_encoder_dir=isr_encoder_dir \
   --isr_encoder_name=isr_encoder \
-  --output_dir=outputs/model_isrFixed_trISRfromXNLIEn42 \
+  --output_dir=outputs/custom_output_model_name \
   --xnli_train_languages=English \
   --embedding_size=768 \
   --train_batch_size=32 \
@@ -87,9 +87,9 @@ python train_classifier.py \
 
 ### Producing a monolingual corpora cache file from Wikipedia dump
 
-1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).
+*1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).*
 
-2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple):
+*2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)*:
 
 Prerequisites:
 - The downloaded dump file (e.g. en_dump.xml) in the current directory.
