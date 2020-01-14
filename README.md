@@ -13,7 +13,7 @@ Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-n
 
 Script for training the ISR Encoder. Requires monolingual corpora cache files for training.
 
-Prerequisites:
+**Prerequisites**:
 
 The following cache files saved in the 'data_dir' directory:
 - Monolingual corpora sentences cache files, as mc_##.npy (e.g. mc_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.
@@ -51,7 +51,7 @@ python train_isr.py \
 
 Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language, i.e. English) for training.
 
-Prerequisites:
+**Prerequisites**:
 
 The following cache files saved in the 'data_dir' directory:
 - NLI training examples cache file(s), as bse_##.npy (e.g. bse_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).
@@ -91,7 +91,7 @@ python train_classifier.py \
 
 **2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)**:
 
-Prerequisites:
+**Prerequisites**:
 - The downloaded dump file (e.g. en_dump.xml) in the current directory.
 ```
 python WikiExtractor.py \
@@ -102,7 +102,7 @@ en_dump.xml
 
 **3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.**
 
-Prerequisites:
+**Prerequisites**:
 - The once-extracted dump file (e.g. wiki_00) in the 'source_file_path' directory (the trailing source file name is not part of the directory and must match the dump file name).
 
 ```
@@ -124,7 +124,7 @@ The monolingual corpora .txt files used in our study can be downloaded here:\
 
 **4. Run bse_cache.py to produce cache files.**
 
-Prerequisites:
+**Prerequisites**:
 - [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
 - [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
 - The custom extracted .txt file in the 'data_dir' directory, as mc_##.txt where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of the text.
@@ -153,7 +153,7 @@ The monolingual corpora cache files used in our study can be downloaded here:\
 
 #### English MNLI training examples
 
-Prerequisites:
+**Prerequisites**:
 - The English MNLI training examples file in the 'data_dir' directory, as multinli.train.en.tsv.
 ```
 python bse_cache.py \
@@ -166,7 +166,7 @@ python bse_cache.py \
 The English MNLI training examples cache file used in our study can be downloaded here: [bse_en.npy](https://drive.google.com/uc?export=download&id=1dzOhSUraOtwhSjReoQhISsMeAnqpXhS5)
 
 #### XNLI dev examples
-Prerequisites:
+**Prerequisites**:
 - The XNLI dev examples file in the 'data_dir' directory, as xnli.dev.tsv.
 ```
 python bse_cache.py \
@@ -178,7 +178,7 @@ python bse_cache.py \
 The XNLI dev examples cache file used in our study can be downloaded here: [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L)
 
 #### XNLI test examples
-Prerequisites:
+**Prerequisites**:
 - The XNLI test examples file in the 'data_dir' directory, as xnli.test.tsv.
 ```
 python bse_cache.py \
