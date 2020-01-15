@@ -9,6 +9,8 @@ Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
 Paper: (AAAI-20 & arXiv links coming soon!)\
 Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)
 
+---
+
 ## ISR Encoder Training
 
 Script for training the ISR Encoder. Requires monolingual corpora cache files for training.
@@ -47,6 +49,8 @@ python train_isr.py \
   --mid_train_eval_nli_model_path=nli_solver_path/nli_solver \
 ```
 
+---
+
 ## Classifier Training
 
 Code for training a classifier on top of fixed ISR Encoder. Requires NLI training examples (mostly available in high-resource language, i.e. English) for training.
@@ -82,6 +86,8 @@ python train_classifier.py \
   --run_mid_train_eval_steps=5000 \
   --mid_train_eval_batch_size=32
 ```
+
+---
 
 ## Parsing and Caching Scripts
 
