@@ -20,9 +20,11 @@ Description: Mid-train evaluation functions for ISR Encoder training.
 import tensorflow as tf
 import util
 
-####################################
-##### DISCRIMINATOR CLASSIFIER #####
-####################################
+
+
+#############################################
+##### EVALUATE DISCRIMINATOR CLASSIFIER #####
+#############################################
 
 def evaluate_Discriminator_classifier(to_eval_examples, language_reference, num_train_languages, sess, original_sentences_tensor, original_label_onehots_tensor, target_label_onehots_tensor, original_sentences_cls_predictions_tensor, generated_sentences_cls_predictions_tensor):
 
@@ -50,8 +52,6 @@ def evaluate_Discriminator_classifier(to_eval_examples, language_reference, num_
 
     original_sentences_cls_predictions, generated_sentences_cls_predictions = sess.run([original_sentences_cls_predictions_tensor, generated_sentences_cls_predictions_tensor], feed_dict=to_eval_feed_dict)
 
-
-
     for i in range(eval_batch_size):
       if to_eval_original_labels[i] == original_sentences_cls_predictions[i]:
         num_original_sentences_cls_correct += 1 
@@ -60,12 +60,16 @@ def evaluate_Discriminator_classifier(to_eval_examples, language_reference, num_
 
     num_examples_seen += eval_batch_size
   
-
   original_sentences_cls_accuracy = float(num_original_sentences_cls_correct) / float(num_examples_seen)
   generated_sentences_cls_accuracy = float(num_generated_sentences_cls_correct) / float(num_examples_seen)
 
   return original_sentences_cls_accuracy, generated_sentences_cls_accuracy
 
+
+
+####################################
+##### EVALUATE NLI TASK SOLVER #####
+####################################
 
 def evaluate_nli_task_solver(to_eval_examples, train_language_abbreviations, language_reference, num_train_languages, mid_train_eval_nli_target_language_abbreviation, original_sentences_tensor, original_label_onehots_tensor, target_label_onehots_tensor, sess, output_sentences_tensor, mid_train_eval_nli_model_path):
 
@@ -88,7 +92,6 @@ def evaluate_nli_task_solver(to_eval_examples, train_language_abbreviations, lan
   premise_x = classifier_graph.get_tensor_by_name("premise_x:0")
   hypothesis_x = classifier_graph.get_tensor_by_name("hypothesis_x:0")
   predictions_tensor = classifier_graph.get_tensor_by_name("predictions_tensor:0")
-
 
   # Iterate over each language used in training ISR
   for current_language_abbreviation in train_language_abbreviations:

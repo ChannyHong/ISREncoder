@@ -33,6 +33,8 @@ flags.DEFINE_integer("char_count_lower_bound", None, "The upper bound character 
 flags.DEFINE_integer("char_count_upper_bound", None, "The lower bound character count.")
 flags.DEFINE_integer("output_num_examples", None, "The number of examples in final output text file.")
 
+
+
 lang_group_mapper = {
   "en": "LATIN",
   "es": "LATIN",
@@ -43,6 +45,8 @@ lang_group_mapper = {
 }
 
 ad = AlphabetDetector()
+
+
 
 # Converts `text` to Unicode (if it's not already), assuming utf-8 input.
 def uni(text):
@@ -69,6 +73,8 @@ def meets_criteria(line, language):
   else:
 	return True
 
+
+
 def main():
 
   lower_bound = FLAGS.char_count_lower_bound
@@ -90,6 +96,11 @@ def main():
   for example in final_examples:
     fw.writelines(example)
 
+
+
+##############################
+##### The Program Driver #####
+##############################
 
 if __name__ == "__main__":
   main()

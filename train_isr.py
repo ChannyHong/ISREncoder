@@ -69,17 +69,11 @@ flags.DEFINE_string("mid_train_eval_nli_model_path", None, "The pathway to model
 
 
 
-
-
-
-
-
 def batch_mean(tensor):
   # input tensor is of shape=(?,1) -> [[1.013], [2.231], ...] <- coming from straight up src's
   # OR of shape=(?,) -> [0.221, 0.312, 0.125, 0.123 ....] <- coming from classification_measure & gradient_penalty_measure
   return tf.reduce_mean(tensor, axis=None) # if axis=0, the reduced mean's of src inputs will have a single [] around it... (the actual numerical value is the same as when axis=None)
   # returned tensor is of shape=() -> 0.323
-
 
 def gradient_penalty_measure(xhat_sentences_input_tensor, xhat_output_tensor):
   xhat_gradient = tf.gradients(xhat_output_tensor, xhat_sentences_input_tensor)[0]
@@ -88,18 +82,12 @@ def gradient_penalty_measure(xhat_sentences_input_tensor, xhat_output_tensor):
   return gradient_penalty
   # returned tensor is of shape=(?,) -> [0.221, 0.312, 0.125, 0.123 ....]
 
-
 def classification_measure(output_tensor, correct_label_onehots_tensor):
   return tf.nn.softmax_cross_entropy_with_logits_v2(labels=correct_label_onehots_tensor, logits=output_tensor)
   # returned tensor is of shape=(?,) -> [0.221, 0.312, 0.125, 0.123 ....]
 
-
 def difference_measure(measure_type, sentences_tensor_1, sentences_tensor_2):
   return tf.reduce_sum(tf.square(sentences_tensor_1-sentences_tensor_2), axis=1)
-
-
-
-
 
 
 
@@ -109,18 +97,14 @@ def main():
   train_language_abbreviations = util.parse_languages_into_abbreviation_list(FLAGS.train_languages)
   num_train_languages = len(train_language_abbreviations)
 
-
   # Save language reference into a json file for future reference: language abbreviation as key and 0-indexed number as value (i.e. {'en': 0, 'es': 1}).
   language_reference = util.create_language_reference(train_language_abbreviations) 
   language_reference_file = open(os.path.join(FLAGS.output_dir, "language_reference.json"), 'w')
   json.dump(language_reference, language_reference_file)
 
-
-
-
-  ######################
-  # GET TRAIN EXAMPLES #
-  ######################
+  ##############################
+  ##### GET TRAIN EXAMPLES #####
+  ##############################
   train_examples = util.get_mc_train_examples(FLAGS.data_dir, train_language_abbreviations)
 
   random.shuffle(train_examples)
@@ -128,14 +112,12 @@ def main():
   # The remainder train examples from not cleanly divisible batch size will be omitted from training
   num_train_steps_per_epoch = int(len(train_examples) / FLAGS.train_batch_size)
 
-
-  #####################
-  # GET DEV EXAMPLES #
-  #####################
+  ############################
+  ##### GET DEV EXAMPLES #####
+  ############################
   if FLAGS.do_mid_train_eval:
     dev_examples = util.get_xnli_dev_examples(FLAGS.data_dir, in_pairs=False)
     dev_example_in_pairs = util.get_xnli_dev_examples(FLAGS.data_dir, in_pairs=True)
-
 
   ###############################
   ##### PLACEHOLDER TENSORS #####
@@ -148,14 +130,11 @@ def main():
   xhat_alphas_tensor = tf.placeholder(tf.float32, [None])
   xhat_alphas_reshaped = tf.reshape(xhat_alphas_tensor, [-1,1]) # reshape for broadcasting scalar multiplier xhat_alphas
 
-
-
   ###################################################
   ##### INITIALIZE GENERATOR AND DISCRIMINATORS #####
   ###################################################
   Gen = gan_models.Generator(train_isr=True, embedding_size=FLAGS.embedding_size, num_train_languages=num_train_languages)
   Dis = gan_models.Discriminator(embedding_size=FLAGS.embedding_size, num_train_languages=num_train_languages)
-
 
   ###########################################################
   ##### RUN TENSORS THROUGH GENERATOR AND DISCRIMINATOR #####
@@ -176,11 +155,6 @@ def main():
   # Discriminator on xhat sentences for gradient penalty
   xhat_sentences_tensor = (xhat_alphas_reshaped * original_sentences_tensor) + ((1.-xhat_alphas_reshaped) * generated_sentences_tensor)
   _, xhat_sentences_src, _ = Dis(xhat_sentences_tensor)
-
-
-
-
-
 
 
 
@@ -209,19 +183,12 @@ def main():
   loss_real_cls = batch_mean(classification_measure(original_sentences_cls, original_label_onehots_tensor))
   lambda_Dis_cls = FLAGS.lambda_Dis_cls
 
-
-
   loss_Dis_total = (loss_DisSrc_real + loss_DisSrc_generated + (lambda_Dis_gp * loss_DisSrc_gp)) + (lambda_Dis_cls * loss_real_cls)
 
   Dis_vars = [Dis_var for Dis_var in tf.trainable_variables() if Dis_var.name.startswith('Dis')]
 
   Dis_optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.Dis_learning_rate, beta1=FLAGS.beta1, beta2=FLAGS.beta2).minimize(loss_Dis_total, var_list=Dis_vars)
 
-
-
-
-
-  
   ### TENSORBOARD ###
   if FLAGS.log_losses:
     tf.summary.scalar('LOSS 1: loss_Dis_total', loss_Dis_total, collections=['loss'])
@@ -229,13 +196,6 @@ def main():
     tf.summary.scalar('LOSS 3: loss_DisSrc_generated', loss_DisSrc_generated, collections=['loss'])
     tf.summary.scalar('LOSS 4: loss_DisSrc_gp', loss_DisSrc_gp, collections=['loss'])
     tf.summary.scalar('LOSS 5: loss_real_cls', loss_real_cls, collections=['loss'])
-
-
-
-
-
-
-
 
 
 
@@ -260,8 +220,6 @@ def main():
   # Generator's Total Loss : loss_Gen_total
   # Sum of loss_Gen_adv and loss_real_cls with their respective weights (lambda).
 
-
-
   ##### LOSSES AND OPTIMIZER #####
   
   loss_Gen_adv = -batch_mean(generated_sentences_src)
@@ -275,20 +233,11 @@ def main():
   loss_Gen_isr = batch_mean(difference_measure(FLAGS.difference_measure, isr_sentences_tensor, backward_isr_sentences_tensor))
   lambda_Gen_isr = FLAGS.lambda_Gen_isr
 
-
-
   loss_Gen_total = (loss_Gen_adv) + (lambda_Gen_cls * loss_gen_cls) + (lambda_Gen_rec * loss_Gen_rec) + (lambda_Gen_isr * loss_Gen_isr)
   
   Gen_vars = [Gen_var for Gen_var in tf.trainable_variables() if Gen_var.name.startswith('Gen')]
 
   Gen_optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.Gen_learning_rate, beta1=FLAGS.beta1, beta2=FLAGS.beta2).minimize(loss_Gen_total, var_list=Gen_vars)
-
-
-
-
-
-
-
 
   ### TENSORBOARD ###
   if FLAGS.log_losses:
@@ -297,13 +246,6 @@ def main():
     tf.summary.scalar('LOSS 8: loss_gen_cls', loss_gen_cls, collections=['loss'])
     tf.summary.scalar('LOSS 9: loss_Gen_rec', loss_Gen_rec, collections=['loss'])
     tf.summary.scalar('LOSS 10: loss_Gen_isr', loss_Gen_isr, collections=['loss'])
-
-
-
-
-
-
-
 
 
 
@@ -340,13 +282,6 @@ def main():
 
 
 
-
-
-
-
-
-
-
   # Start training by running session...
   merged_loss_summaries = tf.summary.merge_all(key='loss')
   merged_eval_accuracy_summaries = tf.summary.merge_all(key='eval_accuracy')
@@ -357,16 +292,15 @@ def main():
   os.system("mkdir -p {}".format(os.path.join(FLAGS.output_dir, "logs")))
   train_writer = tf.summary.FileWriter(os.path.join(FLAGS.output_dir, "logs"), sess.graph)
 
-
-
-
-
-
   # Losses to log
   loss_summaries = None
   global_step = 0
 
-  ##### START TRAINING #####
+  ##############################################################
+  #                                                             
+  #                        START TRAINING
+  #                                                             
+  ##############################################################
   for epoch_num in range(1, FLAGS.num_train_epochs+1):
 
     # Shuffle train_examples every epoch
@@ -374,11 +308,9 @@ def main():
 
     for step_num in range(1, num_train_steps_per_epoch+1):
 
-      ##############################################################
-      #                                                             
-      #                PREPROCESS INPUT SENTENCES
-      #                                                             
-      ##############################################################
+      ######################################
+      ##### PREPROCESS INPUT SENTENCES #####
+      ######################################
 
       # minibatch_bse_sentences : [[0.233, -0.146, ..., 0.256, -0.876], [...], ..., [...], [...]]; with each entry being of BSE dimensions (768-dim)
       # minibatch_language_labels : [0, 3, 2, 4, 2, 3, 1, 0, 2, ... , 3, 2, 0, 0, 1]; given five train languages
@@ -392,26 +324,19 @@ def main():
 
       xhat_alphas = util.create_xhat_alphas(FLAGS.train_batch_size)
       
-
       # Organize the dictionary to feed in for the placeholders of the model
       feed_dict = {original_sentences_tensor: original_sentences, original_label_onehots_tensor: original_label_onehots, target_label_onehots_tensor: target_label_onehots, xhat_alphas_tensor: xhat_alphas}
 
-
-      ##############################################################
-      #                                                             
-      #                TRAIN DISCRIMINATOR (ONE STEP)
-      #                                                             
-      ##############################################################
+      ##########################################
+      ##### TRAIN DISCRIMINATOR (ONE STEP) #####
+      ##########################################
       
       if (step_num % (FLAGS.Dis_Gen_train_ratio+1)) != 0:
         _, loss_summaries = sess.run([Dis_optimizer, merged_loss_summaries], feed_dict=feed_dict)
 
-
-      ##############################################################
-      #                                                             
-      #      TRAIN GENERATOR (ONE STEP AFTER EVERY __ DIS STEP)
-      #                                                             
-      ##############################################################
+      #############################################################
+      ##### TRAIN GENERATOR (ONE STEP AFTER EVERY X DIS STEP) #####
+      #############################################################
 
       else:
         _, loss_summaries = sess.run([Gen_optimizer, merged_loss_summaries], feed_dict=feed_dict)
@@ -419,12 +344,9 @@ def main():
       # Update loss information to Tensorboard
       train_writer.add_summary(loss_summaries, global_step=global_step)
 
-      ##############################################################
-      #                                                             
-      #                      SAVING CHECKPOINTS
-      #                                                             
-      ##############################################################
-
+      ##############################
+      ##### SAVING CHECKPOINTS #####
+      ##############################
 
       # Save checkpoint at every save_checkpoint_steps or at end of epoch
       if (step_num % FLAGS.save_checkpoints_steps == 0) or (step_num == num_train_steps_per_epoch):
@@ -442,7 +364,6 @@ def main():
       if FLAGS.do_mid_train_eval:
         if (step_num % FLAGS.run_mid_train_eval_steps == 0) or ((epoch_num == 1) and (step_num == 1)) or (step_num == num_train_steps_per_epoch):
           
-
           ####################################
           ##### DISCRIMINATOR CLASSIFIER #####
           ####################################
@@ -451,11 +372,8 @@ def main():
 
           original_sentences_cls_accuracy, generated_sentences_cls_accuracy = mid_train_evaluation.evaluate_Discriminator_classifier(to_eval_examples, language_reference, num_train_languages, sess, original_sentences_tensor, original_label_onehots_tensor, target_label_onehots_tensor, original_sentences_cls_predictions_tensor, generated_sentences_cls_predictions_tensor)
 
-
           sess.run(original_sentences_cls_accuracy_tensor.assign(original_sentences_cls_accuracy))
           sess.run(generated_sentences_cls_accuracy_tensor.assign(generated_sentences_cls_accuracy))
-
-
 
           ###############################################
           ##### NLI TASK SOLVERS #####
@@ -479,13 +397,11 @@ def main():
           for train_language_abbreviation in train_language_abbreviations:
             sess.run(reconstructed_nli_task_eval_accuracy_dict[train_language_abbreviation].assign(reconstructed_sentences_nli_task_solver_accuracy[train_language_abbreviation]))
 
-
           ############################################
           ##### UPDATE SUMMARY WITH EVAL RESULTS #####
           ############################################
           eval_accuracy_summaries = sess.run(merged_eval_accuracy_summaries)
           train_writer.add_summary(eval_accuracy_summaries, global_step=global_step)
-      
 
       # Increment global step
       global_step += 1
@@ -495,9 +411,9 @@ def main():
 
 
 
-
-
+##############################
+##### The Program Driver #####
+##############################
 
 if __name__ == "__main__":
   main()
-

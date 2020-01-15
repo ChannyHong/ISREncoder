@@ -19,6 +19,8 @@ Description: Useful functions and class definitions.
 
 import random
 
+
+
 LABEL_MAP = {
   "entailment": 0,
   "neutral": 1,
@@ -44,16 +46,15 @@ language_dict = {
 }
 
 
+
 def parse_languages_into_abbreviation_list(languages):
   return [language_dict[language] for language in languages.split(',')]
-
 
 def create_language_reference(train_language_abbreviations):
   language_reference = {}
   for i, language_abbreviation in enumerate(train_language_abbreviations):
     language_reference[language_abbreviation] = i
   return language_reference
-
 
 def convert_to_onehots(num_train_languages, labels):
   onehots = []
@@ -63,13 +64,11 @@ def convert_to_onehots(num_train_languages, labels):
     onehots.append(label_onehot)
   return onehots
 
-
 def create_random_labels(num_train_languages, batch_size):
   labels = []
   for _ in range(batch_size):
     labels.append(random.randrange(num_train_languages))
   return labels
-
 
 def create_xhat_alphas(batch_size):
   xhat_alphas = []
@@ -77,8 +76,6 @@ def create_xhat_alphas(batch_size):
     xhat_alpha = random.uniform(0, 1)
     xhat_alphas.append(xhat_alpha)
   return xhat_alphas
-
-
 
 def get_mc_minibatch(train_examples, step_num, batch_size, language_reference):
   star_index = (step_num-1)*batch_size
@@ -88,7 +85,6 @@ def get_mc_minibatch(train_examples, step_num, batch_size, language_reference):
   sentences = [train_examples[i].sentence for i in indices]
   languages = [language_reference[train_examples[i].language] for i in indices]
   return sentences, languages
-
 
 def get_xnli_minibatch(train_examples, step_num, batch_size, language_reference):
   star_index = (step_num-1)*train_batch_size
@@ -101,17 +97,12 @@ def get_xnli_minibatch(train_examples, step_num, batch_size, language_reference)
   languages = [language_reference[train_examples[i].language] for i in indices]
   return premise_vectors, hypothesis_vectors, labels, languages
 
-
-
-
 def convert_to_singles_from_pairs(train_example_in_pairs):
   train_examples = []
   for train_example_in_pair in train_example_in_pairs:
     train_examples.append(InputSentence(sentence=train_example_in_pair.sentence1, language=train_example_in_pair.language))
     train_examples.append(InputSentence(sentence=train_example_in_pair.sentence2, language=train_example_in_pair.language))
   return train_examples
-
-
 
 def get_mc_train_examples(data_dir, train_language_abbreviations):
   train_examples = []
@@ -125,8 +116,6 @@ def get_mc_train_examples(data_dir, train_language_abbreviations):
   
   return train_examples
 
-
-
 def get_xnli_train_examples(data_dir, train_language_abbreviations):
   train_examples = []
 
@@ -138,7 +127,6 @@ def get_xnli_train_examples(data_dir, train_language_abbreviations):
       train_examples.append(util.InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=language_abbreviation))
   
   return train_examples
-
 
 def get_xnli_dev_examples(data_dir, in_pairs=True):
   dev_examples = []
@@ -155,7 +143,6 @@ def get_xnli_dev_examples(data_dir, in_pairs=True):
   
   return dev_examples
 
-
 def get_xnli_dev_examples_by_language(data_dir, eval_language_abbreviations):
   dev_examples_by_lang_dict = {}
 
@@ -169,7 +156,6 @@ def get_xnli_dev_examples_by_language(data_dir, eval_language_abbreviations):
     dev_examples_by_lang_dict[eval_language_abbreviation] = dev_examples_by_lang
 
   return dev_examples_by_lang_dict
-
 
 
 

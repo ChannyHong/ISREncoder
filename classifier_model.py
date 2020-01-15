@@ -21,12 +21,14 @@ Description: The NLI classifier model (to be trained on top of fixed ISR Encoder
 import tensorflow as tf
 import tensorflow.contrib as tf_contrib
 
+
+
 def weight_initializer():
   return tf_contrib.layers.xavier_initializer()
 
-
 def batch_norm(layer):
   return tf.layers.batch_normalization(layer)
+
 
 
 ##############################################################
@@ -34,7 +36,6 @@ def batch_norm(layer):
 #                      CLASSIFIER MODEL
 #                                                              
 ##############################################################
-
 
 class Classifier():
   def __init__(self, input_layer_dim, num_labels):
@@ -46,7 +47,6 @@ class Classifier():
 
     self.W_cls = tf.get_variable(name="cls_W_cls", shape=[768, num_labels], initializer=weight_initializer())
     self.b_cls = tf.get_variable(name="cls_b_cls", shape=[num_labels], initializer=tf.zeros_initializer())
-
 
   def __call__(self, input_layer, keep_rate):
 

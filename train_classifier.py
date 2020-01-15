@@ -87,19 +87,13 @@ def evaluate_model(sess, isr_sess, original_sentences_tensor, original_label_one
     get_premise_isr_feed_dict = {original_sentences_tensor: minibatch_bse_premise_vectors, original_label_onehots_tensor: minibatch_language_onehots}
     get_hypothesis_isr_feed_dict = {original_sentences_tensor: minibatch_bse_hypothesis_vectors, original_label_onehots_tensor: minibatch_language_onehots} 
 
-
     # forward pass through Generator's Encoder
     minibatch_isr_premise_sentences = isr_sess.run(isr_sentences_tensor, feed_dict=get_premise_isr_feed_dict)
     minibatch_isr_hypothesis_sentences = isr_sess.run(isr_sentences_tensor, feed_dict=get_hypothesis_isr_feed_dict)
 
-
-
-
     feed_dict = {premise_x: minibatch_isr_premise_sentences, hypothesis_x: minibatch_isr_hypothesis_sentences}
 
     predictions = sess.run(predictions_tensor, feed_dict=feed_dict)
-
-
 
     for i in range(eval_batch_size):
       if minibatch_labels[i] == predictions[i]:
@@ -111,12 +105,7 @@ def evaluate_model(sess, isr_sess, original_sentences_tensor, original_label_one
 
 
 
-
-
-
-
 def main():
-
 
   ##############################################################
   #                                                             
@@ -146,7 +135,6 @@ def main():
   #                                                             
   ##############################################################
 
-
   # Set up graph to extract ISR sentences
   isr_encoder_graph = tf.Graph()
   isr_sess = tf.Session(graph=isr_encoder_graph)
@@ -161,7 +149,7 @@ def main():
   original_sentences_tensor = isr_encoder_graph.get_tensor_by_name("original_sentences_tensor:0")
   original_label_onehots_tensor = isr_encoder_graph.get_tensor_by_name("original_label_onehots_tensor:0")
 
-  ### HERE IT IS LADIES AND GENTLEMEN! ###
+  ### THE ISR TENSOR! ###
   isr_sentences_tensor = isr_encoder_graph.get_tensor_by_name("forward_isr_sentences_tensor:0")
 
 
@@ -192,7 +180,6 @@ def main():
 
   cls_optimizer = tf.train.AdamOptimizer(learning_rate=FLAGS.learning_rate, beta1=FLAGS.beta1, beta2=FLAGS.beta2).minimize(total_loss, var_list=cls_vars)
 
-
   ### LOSS TENSORBOARD ###
   tf.summary.scalar('LOSS 1: classifier_loss', total_loss, collections=['loss'])
 
@@ -211,17 +198,16 @@ def main():
     dev_accuracy_tensors_dict[eval_language_abbreviation] = dev_accuracy_by_lang_tensor
     tf.summary.scalar("EVAL DEV: {} eval_accuracy".format(eval_language_abbreviation), dev_accuracy_by_lang_tensor, collections=['eval_accuracy'])
 
-
-
   ##### SESSION CONFIGURATION #####
   merged_loss_summary = tf.summary.merge_all(key='loss')
   merged_eval_accuracy_summaries = tf.summary.merge_all(key='eval_accuracy')
-  sess = tf.InteractiveSession() ## make this worth it by adding summaries...
+  sess = tf.InteractiveSession() 
   sess.run(tf.global_variables_initializer())
   saver = tf.train.Saver()
 
   os.system("mkdir -p {}".format(os.path.join(FLAGS.output_dir, "logs")))
   train_writer = tf.summary.FileWriter(os.path.join(FLAGS.output_dir, "logs"), sess.graph)
+
 
 
   ##############################################################
@@ -238,37 +224,31 @@ def main():
 
     for step_num in range(1, num_train_steps_per_epoch+1):
 
-
-      ##############################################################
-      #                  Process Training Minibatch
-      ##############################################################
+      ######################################
+      ##### Process Training Minibatch #####
+      ######################################
 
       minibatch_bse_premise_vectors, minibatch_bse_hypothesis_vectors, minibatch_labels, minibatch_languages = get_xnli_minibatch(train_examples, step_num, FLAGS.train_batch_size, language_reference)
 
-      ##
       minibatch_language_onehots = util.convert_to_onehots(len(language_reference), minibatch_languages)
-      ##
 
-
-      ##############################################################
-      #                      Get ISR Sentences
-      ##############################################################
+      #############################
+      ##### Get ISR Sentences #####
+      #############################
 
       #### GET ISR SENTENCES #####
 
       get_premise_isr_feed_dict = {original_sentences_tensor: minibatch_bse_premise_vectors, original_label_onehots_tensor: minibatch_language_onehots}
       get_hypothesis_isr_feed_dict = {original_sentences_tensor: minibatch_bse_hypothesis_vectors, original_label_onehots_tensor: minibatch_language_onehots} 
 
-
-
       # forward pass through Generator's Encoder
       minibatch_isr_premise_sentences = isr_sess.run(isr_sentences_tensor, feed_dict=get_premise_isr_feed_dict)
       minibatch_isr_hypothesis_sentences = isr_sess.run(isr_sentences_tensor, feed_dict=get_hypothesis_isr_feed_dict)
 
       
-      ##############################################################
-      #             Perform Gradient Descent On Classifier
-      ##############################################################
+      ##################################################
+      ##### Perform Gradient Descent On Classifier #####
+      ##################################################
 
       ##### RUN TRAINING WITH ISR SENTENCES #####
       cls_feed_dict = {premise_x: minibatch_isr_premise_sentences, hypothesis_x: minibatch_isr_hypothesis_sentences, y: minibatch_labels}
@@ -279,18 +259,18 @@ def main():
       train_writer.add_summary(loss_summary, global_step=global_step)
 
 
-      ##############################################################
-      #                      Save Checkpoints
-      ##############################################################
+      ############################
+      ##### Save Checkpoints #####
+      ############################
 
       # Save checkpoint at every save_checkpoint_steps or at end of epoch
       if (step_num % FLAGS.save_checkpoints_steps == 0) or (step_num == num_train_steps_per_epoch):
         saved_path = saver.save(sess, os.path.join(FLAGS.output_dir, "classifier-{}-{}".format(epoch_num, step_num)))
 
         
-      ##############################################################
-      #                  Run Mid Train Evaluation
-      ##############################################################
+      ####################################
+      ##### Run Mid Train Evaluation #####
+      ####################################
 
       if FLAGS.do_mid_train_eval:
         # Run evaluation at every run_mid_train_eval_steps or at very beginning of training or at end of epoch
@@ -344,11 +324,9 @@ def main():
 
 
 
-
-
-##############################################################
-#                   The Program Driver
-##############################################################
+##############################
+##### The Program Driver #####
+##############################
 
 if __name__ == "__main__":
   main()

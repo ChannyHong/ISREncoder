@@ -16,6 +16,7 @@
 Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
 Description: Script for caching NLI examples / monolingual corpus into BERT sentence embeddings.
 '''
+
 import tensorflow as tf
 import numpy as np
 import subprocess
@@ -41,6 +42,8 @@ flags.DEFINE_bool("do_lower_case", False, "Whether to use cased or uncased token
 flags.DEFINE_integer( "max_seq_length", 128, "The maximum number of tokens per example (sentence).")
 lflags.DEFINE_integer("pooling_layer", None, "The pooling layer to apply the pooling strategy to. When set to None, [-2] (second to last layer) is invoked by default.")
 
+
+
 LABEL_MAP = {
   "entailment": 0,
   "neutral": 1,
@@ -65,14 +68,14 @@ language_dict = {
   'Urdu': 'ur',
 }
 
+
+
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
   def __init__(self, input_a, input_b, label):
     self.input_a = input_a
     self.input_b = input_b
     self.label = label
-
-
 
 def read_tsv(input_file, quotechar=None):
   """Reads a tab separated value file."""
@@ -82,7 +85,6 @@ def read_tsv(input_file, quotechar=None):
     for line in reader:
       lines.append(line)
     return lines
-
 
 def get_train_examples_in_bse(data_dir, train_language, bert_service_client):
   raw_premise_list = []
@@ -106,17 +108,9 @@ def get_train_examples_in_bse(data_dir, train_language, bert_service_client):
   bse_premise_array = bert_service_client.encode(raw_premise_list)
   bse_hypothesis_array = bert_service_client.encode(raw_hypothesis_list)
 
-  # sanity check!
-  if len(bse_premise_array) == len(bse_hypothesis_array) == len(label_list):
-    return np.array(zip(bse_premise_array, bse_hypothesis_array, label_list))
-  else:
-    print("Lengths do not match!")
-    return "Lengths do not match!"
+  return np.array(zip(bse_premise_array, bse_hypothesis_array, label_list))
 
-
-
-
-def get_dev_examples_in_bse(data_dir, data_type, bert_service_client):
+def get_devtest_examples_in_bse(data_dir, data_type, bert_service_client):
   raw_premise_list = []
   raw_hypothesis_list = []
   label_list = []
@@ -141,15 +135,7 @@ def get_dev_examples_in_bse(data_dir, data_type, bert_service_client):
   bse_premise_array = bert_service_client.encode(raw_premise_list)
   bse_hypothesis_array = bert_service_client.encode(raw_hypothesis_list)
 
-  # sanity check!
-  if len(bse_premise_array) == len(bse_hypothesis_array) == len(label_list) == len(language_list):
-    return np.array(zip(bse_premise_array, bse_hypothesis_array, label_list, language_list))
-  else:
-    print("Lengths do not match!")
-    return "Lengths do not match!"
-
-
-
+  return np.array(zip(bse_premise_array, bse_hypothesis_array, label_list, language_list))
 
 def get_mc_sentences_in_bse(data_dir, language, bert_service_client):
   # So the entire train_examples is: npdarray: [... [[... 768d ...], [... 768d ...], int_label] ...]
@@ -164,7 +150,6 @@ def get_mc_sentences_in_bse(data_dir, language, bert_service_client):
   bse_sentences = bert_service_client.encode(raw_sentences)
 
   return np.array(bse_sentences)
-
 
 
 
@@ -191,7 +176,6 @@ def main():
   # Start bert_serving client
   bert_service_client = BertClient()
 
-
   # Convert input data into BSE
   if FLAGS.data_type == "mnli":
     cache_filename = os.path.join(FLAGS.output_dir, "bse_{}".format(FLAGS.language))
@@ -199,8 +183,8 @@ def main():
     np.save(cache_filename, examples)
 
   elif FLAGS.data_type == "dev" or FLAGS.data_type == "test":
-    cache_filename = os.path.join(FLAGS.output_dir, "{}".format(string.upper(FLAGS.language)))
-    examples = get_dev_examples_in_bse(FLAGS.data_dir, FLAGS.data_type, bert_service_client)
+    cache_filename = os.path.join(FLAGS.output_dir, "{}".format(string.upper(FLAGS.data_type)))
+    examples = get_devtest_examples_in_bse(FLAGS.data_dir, FLAGS.data_type, bert_service_client)
     np.save(cache_filename, examples)
 
   elif FLAGS.data_type == "mc":
@@ -211,10 +195,14 @@ def main():
   else:
     print("Invalid data type (must be one of 'mnli', 'dev', 'test' or 'mc').")
 
-
-
   # Kill bert_server_process
   bert_server_process.kill()
+
+
+
+##############################
+##### The Program Driver #####
+##############################
 
 if __name__ == "__main__":
   main()

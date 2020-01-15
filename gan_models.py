@@ -21,8 +21,10 @@ import tensorflow as tf
 import tensorflow.contrib as tf_contrib
 
 
+
 def weight_initializer():
   return tf_contrib.layers.xavier_initializer()
+
 
 
 ##############################################################
@@ -62,7 +64,6 @@ class Discriminator():
     self.W_src = tf.get_variable(name="Dis_W_src", shape=[hidden_size, 1], initializer=weight_initializer())
     self.b_src = tf.get_variable(name="Dis_b_src", shape=[1], initializer=tf.zeros_initializer())
 
-
   def __call__(self, sentences_input_tensor):
     
     ##### HIDDEN LAYERS #####
@@ -83,6 +84,7 @@ class Discriminator():
     return output_tensor_cls, output_tensor_src, predictions_tensor
 
 
+
 ##############################################################
 #                                                             
 #                         GENERATOR
@@ -98,7 +100,6 @@ class Generator():
     Enc_hidden_size = embedding_size
     isr_size = embedding_size
     Dec_hidden_size = embedding_size
-
 
     ##### WEIGHTS AND BIASES #####
 
@@ -131,7 +132,6 @@ class Generator():
     self.W_Enc_Up_2 = tf.get_variable(name="Gen_W_Enc_Up_2", shape=[Enc_hidden_size*2, isr_size], initializer=weight_initializer())
     self.b_Enc_Up_2 = tf.get_variable(name="Gen_b_Enc_Up_2", shape=[isr_size], initializer=tf.zeros_initializer())
 
-
     if train_isr:
 
       ### Decoder ###
@@ -163,16 +163,14 @@ class Generator():
       self.W_Dec_Up_2 = tf.get_variable(name="Gen_W_Dec_Up_2", shape=[Dec_hidden_size*2, bse_size], initializer=weight_initializer())
       self.b_Dec_Up_2 = tf.get_variable(name="Gen_b_Dec_Up_2", shape=[bse_size], initializer=tf.zeros_initializer())
 
-
-
   def __call__(self, direction, original_sentences_tensor, original_label_onehots_tensor, target_label_onehots_tensor=None):
+    
     ##### LAYERS #####
 
     # Tensor for input sentence
     # self.original_sentences_tensor = tf.placeholder(tf.float32, [None, bse_size])
     # self.original_label_onehots_tensor = tf.placeholder(tf.float32, [None, num_train_languages])
     
-
     forward_Encoder_input_tensor = tf.concat([original_sentences_tensor, original_label_onehots_tensor], axis=1)
 
     # FORWARD DIRECTION
@@ -206,12 +204,3 @@ class Generator():
       generated_sentences_tensor = tf.matmul(h_Dec_7, self.W_Dec_Up_2) + self.b_Dec_Up_2
 
     return isr_sentences_tensor, generated_sentences_tensor
-
-
-
-
-
-
-
-
-
