@@ -17,7 +17,9 @@ Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
 Description: Useful functions and class definitions.
 '''
 
+import numpy as np
 import random
+import os
 
 
 
@@ -78,7 +80,7 @@ def create_xhat_alphas(batch_size):
   return xhat_alphas
 
 def get_mc_minibatch(train_examples, step_num, batch_size, language_reference):
-  star_index = (step_num-1)*batch_size
+  start_index = (step_num-1)*batch_size
   end_index = step_num*batch_size
 
   indices = range(start_index, end_index)
@@ -112,7 +114,7 @@ def get_mc_train_examples(data_dir, train_language_abbreviations):
     loaded_examples = np.load(os.path.join(data_dir, "mc_%s.npy" % language_abbreviation), allow_pickle=True)
 
     for example in loaded_examples:
-      train_examples.append(util.InputSentence(sentence=example, language=language_abbreviation))
+      train_examples.append(InputSentence(sentence=example, language=language_abbreviation))
   
   return train_examples
 
@@ -124,7 +126,7 @@ def get_xnli_train_examples(data_dir, train_language_abbreviations):
     loaded_examples = np.load(os.path.join(data_dir, "bse_%s.npy" % language_abbreviation), allow_pickle=True)
 
     for example in loaded_examples:
-      train_examples.append(util.InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=language_abbreviation))
+      train_examples.append(InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=language_abbreviation))
   
   return train_examples
 
@@ -135,11 +137,11 @@ def get_xnli_dev_examples(data_dir, in_pairs=True):
 
   if in_pairs:
     for example in loaded_examples:
-      dev_examples.append(util.InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=example[3]))
+      dev_examples.append(InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=example[3]))
   else:
     for example in loaded_examples:
-      dev_examples.append(util.InputSentence(sentence=example[0], language=example[3]))
-      dev_examples.append(util.InputSentence(sentence=example[1], language=example[3]))
+      dev_examples.append(InputSentence(sentence=example[0], language=example[3]))
+      dev_examples.append(InputSentence(sentence=example[1], language=example[3]))
   
   return dev_examples
 

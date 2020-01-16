@@ -86,7 +86,7 @@ def classification_measure(output_tensor, correct_label_onehots_tensor):
   return tf.nn.softmax_cross_entropy_with_logits_v2(labels=correct_label_onehots_tensor, logits=output_tensor)
   # returned tensor is of shape=(?,) -> [0.221, 0.312, 0.125, 0.123 ....]
 
-def difference_measure(measure_type, sentences_tensor_1, sentences_tensor_2):
+def difference_measure(sentences_tensor_1, sentences_tensor_2):
   return tf.reduce_sum(tf.square(sentences_tensor_1-sentences_tensor_2), axis=1)
 
 
@@ -124,7 +124,7 @@ def main():
   ###############################
 
   # Placeholder tensors to pass in real data at each training step
-  original_sentences_tensor = tf.placeholder(tf.float32, [None, FLAGS.bse_size], name="original_sentences_tensor")
+  original_sentences_tensor = tf.placeholder(tf.float32, [None, FLAGS.embedding_size], name="original_sentences_tensor")
   original_label_onehots_tensor = tf.placeholder(tf.float32, [None, num_train_languages], name="original_label_onehots_tensor")
   target_label_onehots_tensor = tf.placeholder(tf.float32, [None, num_train_languages])
   xhat_alphas_tensor = tf.placeholder(tf.float32, [None])
@@ -227,10 +227,10 @@ def main():
   loss_gen_cls = batch_mean(classification_measure(generated_sentences_cls, target_label_onehots_tensor))
   lambda_Gen_cls = FLAGS.lambda_Gen_cls
 
-  loss_Gen_rec = batch_mean(difference_measure(FLAGS.difference_measure, original_sentences_tensor, reconstructed_sentences_tensor)) # ADD batch_mean LATER ON
+  loss_Gen_rec = batch_mean(difference_measure(original_sentences_tensor, reconstructed_sentences_tensor)) # ADD batch_mean LATER ON
   lambda_Gen_rec = FLAGS.lambda_Gen_rec
 
-  loss_Gen_isr = batch_mean(difference_measure(FLAGS.difference_measure, isr_sentences_tensor, backward_isr_sentences_tensor))
+  loss_Gen_isr = batch_mean(difference_measure(isr_sentences_tensor, backward_isr_sentences_tensor))
   lambda_Gen_isr = FLAGS.lambda_Gen_isr
 
   loss_Gen_total = (loss_Gen_adv) + (lambda_Gen_cls * loss_gen_cls) + (lambda_Gen_rec * loss_Gen_rec) + (lambda_Gen_isr * loss_Gen_isr)
