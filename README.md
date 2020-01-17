@@ -171,7 +171,7 @@ The monolingual corpora cache files used in our study can be downloaded here:\
 
 **2. Run bse_cache.py to produce cache files.**
 
-#### English MNLI training examples
+#### _English MNLI training examples_
 
 **Prerequisites**:
 - [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
@@ -187,7 +187,7 @@ python bse_cache.py \
 ```
 The English MNLI training examples cache file used in our study can be downloaded here: [bse_en.npy](https://drive.google.com/uc?export=download&id=1dzOhSUraOtwhSjReoQhISsMeAnqpXhS5)
 
-#### XNLI dev examples
+#### _XNLI dev examples_
 **Prerequisites**:
 - [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
 - [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
@@ -201,7 +201,7 @@ python bse_cache.py \
 ```
 The XNLI dev examples cache file used in our study can be downloaded here: [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L)
 
-#### XNLI test examples
+#### _XNLI test examples_
 **Prerequisites**:
 - [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
 - [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
