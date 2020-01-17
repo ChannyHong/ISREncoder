@@ -18,7 +18,7 @@ Script for training the ISR Encoder. Requires monolingual corpora cache files fo
 **Prerequisites**:
 
 The following cache files saved in the 'data_dir' directory:
-- Monolingual corpora sentences cache files, as mc_##.npy (e.g. mc_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.
+- Monolingual corpora sentences cache files, as mc_##.npy (e.g. "mc_en.npy") where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'train_languages'; refer to Parsing and Caching Scripts section below.
 - (If do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L); refer to Parsing and Caching Scripts section below.
 
 (If do_mid_train_eval,) The following model files in the 'mid_train_eval_nli_model_path' directory (the trailing 'nli_solver' is the model name and not part of the directory):
@@ -66,7 +66,7 @@ Code for training a classifier on top of fixed ISR Encoder. Requires NLI trainin
 **Prerequisites**:
 
 The following cache files saved in the 'data_dir' directory:
-- NLI training examples cache file(s), as bse_##.npy (e.g. bse_en.npy) where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).
+- NLI training examples cache file(s), as bse_##.npy (e.g. "bse_en.npy") where ## corresponds to [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) of each 'xnli_train_languages'; refer to Parsing and Caching Scripts section below. Theoretically, NLI training examples from multiple languages can be used jointly from training the classifier on top of ISR (while the underlying assumption is that only English training examples are widely available currently).
 - (if do_mid_train_eval) XNLI dev examples cache file, as [DEV.npy](https://drive.google.com/uc?export=download&id=1VOZqXGrLRjVbSmf-wB9ETrBtGfQPNZ7L).
 
 The following files in the 'isr_encoder_dir' directory:
@@ -109,10 +109,10 @@ tensorboard --port=6006 --logdir=outputs/custom_output_model_name
 
 **1. Download the [Wikipedia dump](https://dumps.wikimedia.org/) of the language of interest (.XML file).**
 
-**2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. wiki_00) in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)**:
+**2. Use [WikiExtractor](https://github.com/attardi/wikiextractor) to extract and clean text from the XML file, outputting a file (e.g. "wiki_00") in the "AA" folder within the 'output' directory. The "100G" 'bytes' parameter in our sample usage is to ensure that only 1 file is outputted (rather than broken up into multiple)**:
 
 **Prerequisites**:
-- The downloaded dump file (e.g. en_dump.xml) in the current directory.
+- The downloaded dump file (e.g. "en_dump.xml") in the current directory.
 ```
 python WikiExtractor.py \
  --output=en_extracted \
@@ -123,11 +123,11 @@ en_dump.xml
 **3. Run mc_custom_extraction.py on once-extracted file to perform custom extraction and cleanup to output a .txt file.**
 
 **Prerequisites**:
-- The once-extracted dump file (e.g. wiki_00) in the 'source_file_path' directory (the trailing source file name is not part of the directory and must match the dump file name).
+- The once-extracted dump file renamed to its [ISO 639-1 Code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. for once extracted English dump file, renamed to "en" from "wiki_00") in the 'source_file_path' directory.
 
 ```
 python mc_custom_extraction.py \
-  --source_file_path=once_extracted/wiki_00 \
+  --source_file_path=once_extracted \
   --output_dir=custom_extracted \
   --language=en \
   --char_count_lower_bound=4 \
