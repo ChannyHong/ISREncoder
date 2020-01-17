@@ -140,12 +140,12 @@ def main():
   fr = open(os.path.join(FLAGS.source_file_path, "{}".format(FLAGS.language)), "r")
   candidates = []
 
-  for i, line in enumerate(fr):
+  for line in fr:
     if not meets_criteria(line, FLAGS.language):
       continue
-  else:
-    if (lower_bound < len(line)) and (len(line) < upper_bound):
-      candidates.append(line)
+    else:
+      if (lower_bound < len(line)) and (len(line) < upper_bound):
+        candidates.append(line)
 
   final_examples = random.sample(candidates, FLAGS.output_num_examples)
   fw = open(os.path.join(FLAGS.output_dir, "{}.txt".format(FLAGS.language)), "w")
