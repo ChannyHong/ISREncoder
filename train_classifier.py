@@ -64,6 +64,7 @@ def evaluate_model(sess, isr_sess, original_sentences_tensor, original_label_one
   num_examples = len(examples_to_eval)
   num_examples_seen = 0
   num_correct = 0
+  eval_batch_size = FLAGS.mid_train_eval_batch_size
 
   num_eval_steps = int(num_examples / FLAGS.mid_train_eval_batch_size) # Omit remainders
 
@@ -228,7 +229,7 @@ def main():
       ##### Process Training Minibatch #####
       ######################################
 
-      minibatch_bse_premise_vectors, minibatch_bse_hypothesis_vectors, minibatch_labels, minibatch_languages = get_xnli_minibatch(train_examples, step_num, FLAGS.train_batch_size, language_reference)
+      minibatch_bse_premise_vectors, minibatch_bse_hypothesis_vectors, minibatch_labels, minibatch_languages = util.get_xnli_minibatch(train_examples, step_num, FLAGS.train_batch_size, language_reference)
 
       minibatch_language_onehots = util.convert_to_onehots(len(language_reference), minibatch_languages)
 

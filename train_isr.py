@@ -101,6 +101,7 @@ def main():
   language_reference = util.create_language_reference(train_language_abbreviations) 
   language_reference_file = open(os.path.join(FLAGS.output_dir, "language_reference.json"), 'w')
   json.dump(language_reference, language_reference_file)
+  language_reference_file.close()
 
   ##############################
   ##### GET TRAIN EXAMPLES #####
@@ -116,8 +117,8 @@ def main():
   ##### GET DEV EXAMPLES #####
   ############################
   if FLAGS.do_mid_train_eval:
-    dev_examples = util.get_xnli_dev_examples(FLAGS.data_dir, in_pairs=False)
-    dev_example_in_pairs = util.get_xnli_dev_examples(FLAGS.data_dir, in_pairs=True)
+    dev_examples = util.get_xnli_dev_examples(FLAGS.data_dir, train_language_abbreviations, in_pairs=False)
+    dev_example_in_pairs = util.get_xnli_dev_examples(FLAGS.data_dir, train_language_abbreviations, in_pairs=True)
 
   ###############################
   ##### PLACEHOLDER TENSORS #####

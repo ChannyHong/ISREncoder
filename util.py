@@ -89,8 +89,8 @@ def get_mc_minibatch(train_examples, step_num, batch_size, language_reference):
   return sentences, languages
 
 def get_xnli_minibatch(train_examples, step_num, batch_size, language_reference):
-  star_index = (step_num-1)*train_batch_size
-  end_index = step_num*train_batch_size
+  start_index = (step_num-1)*batch_size
+  end_index = step_num*batch_size
 
   indices = range(start_index, end_index)
   premise_vectors = [train_examples[i].sentence1 for i in indices]
@@ -130,32 +130,34 @@ def get_xnli_train_examples(data_dir, train_language_abbreviations):
   
   return train_examples
 
-def get_xnli_dev_examples(data_dir, in_pairs=True):
+def get_xnli_dev_examples(data_dir, language_abbreviations, in_pairs=True):
   dev_examples = []
 
   loaded_examples = np.load(os.path.join(data_dir, "DEV.npy"), allow_pickle=True)
 
   if in_pairs:
     for example in loaded_examples:
-      dev_examples.append(InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=example[3]))
+      if example[3] in language_abbreviations:
+      	dev_examples.append(InputSentencePair(sentence1=example[0], sentence2=example[1], label=example[2], language=example[3]))
   else:
     for example in loaded_examples:
-      dev_examples.append(InputSentence(sentence=example[0], language=example[3]))
-      dev_examples.append(InputSentence(sentence=example[1], language=example[3]))
+      if example[3] in language_abbreviations:
+	    dev_examples.append(InputSentence(sentence=example[0], language=example[3]))
+	    dev_examples.append(InputSentence(sentence=example[1], language=example[3]))
   
   return dev_examples
 
-def get_xnli_dev_examples_by_language(data_dir, eval_language_abbreviations):
+def get_xnli_dev_examples_by_language(data_dir, language_abbreviations):
   dev_examples_by_lang_dict = {}
 
-  dev_example_in_pairs = get_xnli_dev_examples(data_dir, True)
+  dev_example_in_pairs = get_xnli_dev_examples(data_dir, language_abbreviations, True)
   
-  for eval_language_abbreviation in eval_language_abbreviations:
+  for language_abbreviation in language_abbreviations:
     dev_examples_by_lang = []
     for dev_example_in_pair in dev_example_in_pairs:
-      if dev_example_in_pair.language == eval_language_abbreviation:
+      if dev_example_in_pair.language == language_abbreviation:
         dev_examples_by_lang.append(dev_example_in_pair)
-    dev_examples_by_lang_dict[eval_language_abbreviation] = dev_examples_by_lang
+    dev_examples_by_lang_dict[language_abbreviation] = dev_examples_by_lang
 
   return dev_examples_by_lang_dict
 

@@ -49,6 +49,14 @@ python train_isr.py \
   --mid_train_eval_nli_model_path=nli_solver_path/nli_solver
 ```
 
+## Tensorboard
+
+Script to access the Tensorboard logs of the various losses (and if do_mid_train_eval, mid train evaluation accuracies) to help decide when to halt training of ISR Encoder. In our study, we stopped training when the generator seemed to be reasonably functional in generating sentences of correct target domain (classification task accuracy) without losing the semantics of the original sentence (English NLI solving accuracy).
+
+```
+tensorboard --port=6006 --logdir=outputs/isr_training_model
+```
+
 ---
 
 ## Classifier Training
@@ -86,7 +94,13 @@ python train_classifier.py \
   --run_mid_train_eval_steps=5000 \
   --mid_train_eval_batch_size=32
 ```
+### Tensorboard
 
+Script to access the Tensorboard logs of the classifier loss and training accuracy (and if do_mid_train_eval, evaluation accuracies on dev examples).
+
+```
+tensorboard --port=6006 --logdir=outputs/custom_output_model_name
+```
 ---
 
 ## Parsing and Caching Scripts
