@@ -136,7 +136,7 @@ python mc_custom_extraction.py \
 ```
 
 The monolingual corpora .txt files used in our study can be downloaded here:\
-["mc_en.txt"](https://drive.google.com/uc?export=download&id=1SkZKzfMY2X5_1XNOvfIE5RSjiA34ec6z)\
+[mc_en.txt](https://drive.google.com/uc?export=download&id=1SkZKzfMY2X5_1XNOvfIE5RSjiA34ec6z)\
 [mc_es.txt](https://drive.google.com/uc?export=download&id=1LsoXQgGGp5n_Ks1sFO4AHTe9UH6QUYA7)\
 [mc_de.txt](https://drive.google.com/uc?export=download&id=1Mz-wxBcgkMKruep59LB3RgWXnYs15h3_)\
 [mc_zh.txt](https://drive.google.com/uc?export=download&id=1jXYRLgox3R_K46uDhOlhzUEY0gYax1pR)\
@@ -167,14 +167,16 @@ The monolingual corpora cache files used in our study can be downloaded here:\
 
 ### Producing a NLI examples cache file from XNLI dataset
 
-**1. Download the [XNLI dev and test examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-1.0.zip) (xnli.dev.tsv and xnli.test.tsv) from the [XNLI project page](https://www.nyu.edu/projects/bowman/xnli/). Also download the [XNLI machine translated training examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-MT-1.0.zip), which includes the original English MNLI training examples (as multinli.train.en.tsv).**
+**1. Download the [XNLI dev and test examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-1.0.zip) ("xnli.dev.tsv" and "xnli.test.tsv") from the [XNLI project page](https://www.nyu.edu/projects/bowman/xnli/). Also download the [XNLI machine translated training examples](https://www.nyu.edu/projects/bowman/xnli/XNLI-MT-1.0.zip), which includes the original English MNLI training examples (as "multinli.train.en.tsv").**
 
 **2. Run bse_cache.py to produce cache files.**
 
 #### English MNLI training examples
 
 **Prerequisites**:
-- The English MNLI training examples file in the 'data_dir' directory, as multinli.train.en.tsv.
+- [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
+- [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
+- The English MNLI training examples file in the 'data_dir' directory, as "multinli.train.en.tsv".
 ```
 python bse_cache.py \
   --data_dir=xnli_data \
@@ -187,7 +189,9 @@ The English MNLI training examples cache file used in our study can be downloade
 
 #### XNLI dev examples
 **Prerequisites**:
-- The XNLI dev examples file in the 'data_dir' directory, as xnli.dev.tsv.
+- [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
+- [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
+- The XNLI dev examples file in the 'data_dir' directory, as "xnli.dev.tsv".
 ```
 python bse_cache.py \
   --data_dir=xnli_data \
@@ -199,7 +203,9 @@ The XNLI dev examples cache file used in our study can be downloaded here: [DEV.
 
 #### XNLI test examples
 **Prerequisites**:
-- The XNLI test examples file in the 'data_dir' directory, as xnli.test.tsv.
+- [bert-as-service](https://github.com/hanxiao/bert-as-service) installed.
+- [BERT-Base, Multilingual Cased model](https://storage.googleapis.com/bert_models/2018_11_23/multi_cased_L-12_H-768_A-12.zip) (refer to [BERT Multilingual GitHub page](https://github.com/google-research/bert/blob/master/multilingual.md) for more details) saved in the 'bert_dir' directory.
+- The XNLI test examples file in the 'data_dir' directory, as "xnli.test.tsv".
 ```
 python bse_cache.py \
   --data_dir=xnli_data \
