@@ -24,8 +24,9 @@ import csv
 import os
 import datetime
 import string
-
 from bert_serving.client import BertClient
+
+import util
 
 flags = tf.flags
 FLAGS = flags.FLAGS
@@ -40,7 +41,6 @@ flags.DEFINE_string("output_dir", None, "The output directory where the cache fi
 flags.DEFINE_string("bert_dir", None, "The directory where BERT model, vocab file, and config files reside.")
 flags.DEFINE_bool("do_lower_case", False, "Whether to use cased or uncased tokenization; should be cased tokenization for our use since we used BERT multilingual cased.")
 flags.DEFINE_integer( "max_seq_length", 128, "The maximum number of tokens per example (sentence).")
-lflags.DEFINE_integer("pooling_layer", None, "The pooling layer to apply the pooling strategy to. When set to None, [-2] (second to last layer) is invoked by default.")
 
 
 
@@ -69,16 +69,15 @@ language_dict = {
 }
 
 
-
+# A single training/test example for simple sequence classification.
 class InputExample(object):
-  """A single training/test example for simple sequence classification."""
   def __init__(self, input_a, input_b, label):
     self.input_a = input_a
     self.input_b = input_b
     self.label = label
 
+# Reads a tab separated value file.
 def read_tsv(input_file, quotechar=None):
-  """Reads a tab separated value file."""
   with tf.gfile.Open(input_file, "r") as f:
     reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
     lines = []
@@ -91,17 +90,17 @@ def get_train_examples_in_bse(data_dir, train_language, bert_service_client):
   raw_hypothesis_list = []
   label_list = []
 
-  lines = read_tsv(os.path.join(data_dir, "raw_dataset", "multinli.train.%s.tsv" % language_dict[train_language]))
+  lines = read_tsv(os.path.join(data_dir, "multinli.train.%s.tsv" % language_dict[train_language]))
 
   for (i, line) in enumerate(lines):
     if i == 0:
       continue
-    raw_premise_list.append(tokenization.convert_to_unicode(line[0]))
-    raw_hypothesis_list.append(tokenization.convert_to_unicode(line[1]))
+    raw_premise_list.append(util.convert_to_unicode(line[0]))
+    raw_hypothesis_list.append(util.convert_to_unicode(line[1]))
     
-    label_raw = tokenization.convert_to_unicode(line[2])
-    if label_raw == tokenization.convert_to_unicode("contradictory"):
-      label_raw = tokenization.convert_to_unicode("contradiction")
+    label_raw = util.convert_to_unicode(line[2])
+    if label_raw == util.convert_to_unicode("contradictory"):
+      label_raw = util.convert_to_unicode("contradiction")
 
     label_list.append(LABEL_MAP[label_raw])
   
@@ -121,16 +120,16 @@ def get_devtest_examples_in_bse(data_dir, data_type, bert_service_client):
   for (i, line) in enumerate(lines):
     if i == 0:
       continue
-    raw_premise_list.append(tokenization.convert_to_unicode(line[6]))
-    raw_hypothesis_list.append(tokenization.convert_to_unicode(line[7]))
+    raw_premise_list.append(util.convert_to_unicode(line[6]))
+    raw_hypothesis_list.append(util.convert_to_unicode(line[7]))
     
-    label_raw = tokenization.convert_to_unicode(line[1])
-    if label_raw == tokenization.convert_to_unicode("contradictory"):
-      label_raw = tokenization.convert_to_unicode("contradiction")
+    label_raw = util.convert_to_unicode(line[1])
+    if label_raw == util.convert_to_unicode("contradictory"):
+      label_raw = util.convert_to_unicode("contradiction")
 
     label_list.append(LABEL_MAP[label_raw])
 
-    language_list.append(tokenization.convert_to_unicode(line[0]))
+    language_list.append(util.convert_to_unicode(line[0]))
   
   bse_premise_array = bert_service_client.encode(raw_premise_list)
   bse_hypothesis_array = bert_service_client.encode(raw_hypothesis_list)
@@ -157,19 +156,9 @@ def main():
   os.system("mkdir -p {}".format(os.path.join(FLAGS.output_dir)))
 
   # Start bert-serving-server; make sure the server supports Python >= 3.5 and Tensorflow >=1.10
-  pooling_strategy_arg = ""
-  if FLAGS.pooling_strategy:
-    pooling_strategy_arg = "-pooling_strategy={}".format(FLAGS.pooling_strategy)
-
-  pooling_layer_arg = ""
-  if FLAGS.pooling_layer:
-    pooling_layer_arg = "-pooling_layer={}".format(FLAGS.pooling_layer)
-
   cased_arg = "-cased_tokenization"
-  if FLAGS.do_lower_case:
-    cased_arg = ""
 
-  start_bertservice_command = "bert-serving-start -model_dir={} -max_seq_len={} {} {} {}".format(FLAGS.bert_dir, FLAGS.max_seq_length, pooling_strategy_arg, pooling_layer_arg, cased_arg)
+  start_bertservice_command = "bert-serving-start -model_dir={} -max_seq_len={} {}".format(FLAGS.bert_dir, FLAGS.max_seq_length, cased_arg)
 
   bert_server_process = subprocess.Popen(start_bertservice_command.split())
 

@@ -20,9 +20,7 @@ Description: The monolingual corpora custom extraction script on once-extracted 
 import tensorflow as tf
 import unicodedata as ud
 import random
-import six
 import os
-
 from collections import defaultdict
 
 flags = tf.flags
@@ -104,28 +102,9 @@ lang_group_mapper = {
 
 
 
-# Converts `text` to Unicode (if it's not already), assuming utf-8 input.
-def uni(text):
-  if six.PY3:
-    if isinstance(text, str):
-      return text
-    elif isinstance(text, bytes):
-      return text.decode("utf-8", "ignore")
-    else:
-      raise ValueError("Unsupported string type: %s" % (type(text)))
-  elif six.PY2:
-    if isinstance(text, str):
-      return text.decode("utf-8", "ignore")
-    elif isinstance(text, unicode):
-      return text
-    else:
-      raise ValueError("Unsupported string type: %s" % (type(text)))
-  else:
-    raise ValueError("Not running on Python2 or Python 3?")
-
 def meets_criteria(line, language):
   ad = AlphabetDetector()
-  if ((line.startswith("<")) or (line.startswith("http")) or (line.startswith("!")) or (line.startswith("www")) or (line in ["\n"])) or (not (lang_group_mapper[language] in ad.detect_alphabet(uni(line)))):
+  if ((line.startswith("<")) or (line.startswith("http")) or (line.startswith("!")) or (line.startswith("www")) or (line in ["\n"])) or (not (lang_group_mapper[language] in ad.detect_alphabet(util.convert_to_unicode(line)))):
 	return False
   else:
 	return True
