@@ -33,9 +33,9 @@ python train_isr.py \
   --Dis_Gen_train_ratio=10 \
   --Dis_learning_rate=0.00001 \
   --Gen_learning_rate=0.00001 \
-  --lambda_Dis_cls=0.0 \
+  --lambda_Dis_cls=1.0 \
   --lambda_Dis_gp=1.0 \
-  --lambda_Gen_cls=0.0 \
+  --lambda_Gen_cls=10.0 \
   --lambda_Gen_rec=1.0 \
   --lambda_Gen_isr=1.0 \
   --beta1=0.5 \
