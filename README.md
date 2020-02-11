@@ -6,7 +6,7 @@ Copyright 2020 Superb AI, Inc.\
 The code, cache files, and the models are all released under the Apache 2.0 license.\
 Authors: Channy Hong, Jaeyeon Lee, Jung Kwon Lee.
 
-Paper: (AAAI-20 & arXiv links coming soon!)\
+Paper: [AAAI-20 link](https://aaai.org/Papers/AAAI/2020GB/AAAI-HongC.3623.pdf) (arXiv link coming soon!)\
 Overview blog post: [Medium](https://medium.com/superb-ai/training-non-english-nlp-models-with-english-training-data-664bbd260681)
 
 ---
